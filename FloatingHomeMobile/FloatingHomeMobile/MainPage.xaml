@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FloatingHomeMobile.MainPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:FloatingHomeMobile"
+    xmlns:viewModel="clr-namespace:FloatingHomeMobile.ViewModel;assembly=FloatingHomeMobile">
+    <Grid>
+        <Grid.BindingContext>
+            <viewModel:MainActivityViewModel />
+        </Grid.BindingContext>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Entry Grid.Column="0" Text="{Binding RemoteIp, Mode=TwoWay}" />
+            <Entry Grid.Column="1" Text="{Binding Protocol, Mode=TwoWay}" />
+        </Grid>
+        <Label Grid.Row="1" Text="{Binding RemoteMessage, Mode=TwoWay}" />
+        <Entry Grid.Row="2" Text="{Binding LocalMessage, Mode=TwoWay}" />
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                Command="{Binding ButtonConnect}"
+                Text="Connect" />
+            <Button
+                Grid.Column="1"
+                Command="{Binding ButtonPush}"
+                Text="Push" />
+        </Grid>
+
+    </Grid>
+</ContentPage>
