@@ -21,8 +21,15 @@ namespace FloatingHomeMobile.Model
         private const int TcpPort = 8082;
 
         private static string _host = "krakadile";
+        //private static string _setDevice = "pikachu";
+        private static string _albom = "albom1";
         private static string _myCode = "phone1";
 
+        //private static string PropName1 = "TemperatureHolder";
+        //private static string PropName2 = "Temperature";
+        private static string PropName3 = "AlbomPosition";
+        private Dictionary<string, PropertiesValues> _setProps;
+        private static readonly Random Rnd = new Random();
         #endregion
 
         private readonly ServerManager _server;
@@ -36,7 +43,13 @@ namespace FloatingHomeMobile.Model
             _server.ServerStart();
             _messageManager = new MessageManager(MulticastHostint, _myCode, _sender, _server, new []{_host});
             _messageManager.RequestReceived += PopHandler;
-            PropNames = new List<string>{"Temperature"};
+            PropNames = new List<string>{ /*PropName1, PropName2,*/ PropName3 };
+            _setProps = new Dictionary<string, PropertiesValues>
+            {
+                //{ _setDevice, new PropertiesValues { { PropName1, "" } } },
+                {_albom, new PropertiesValues{{PropName3, ""}} }
+            };
+
         }
 
         public void Connect()
@@ -93,12 +106,15 @@ namespace FloatingHomeMobile.Model
             StringBuilder sb = new StringBuilder();
             foreach (KeyValuePair<string, Device> device in Request.Devices)
             {
-                var tel = Request.Telemetries[device.Value.Code].First();
-                sb.Append(device.Value.Code).Append(": [").Append(tel.TimeMarker).Append("]\n\r\t");
-                foreach (KeyValuePair<string, string> telValue in tel.Values)
+                foreach (Telemetry telemetry in Request.Telemetries[device.Value.Code])
                 {
-                    sb.Append(telValue.Key).Append(" = ").Append(telValue.Value).Append("\n\r");
+                    sb.Append(device.Value.Code).Append(": [").Append(telemetry.TimeMarker).Append("]\n\r\t");
+                    foreach (KeyValuePair<string, string> telValue in telemetry.Values)
+                    {
+                        sb.Append(telValue.Key).Append(" = ").Append(telValue.Value).Append("\n\r");
+                    }
                 }
+
             }
             RemoteMessage += sb.ToString();
         }
@@ -106,7 +122,10 @@ namespace FloatingHomeMobile.Model
         #endregion
         public void PushHandler()
         {
-            var order = new Order(_myCode, DateTime.Now, _host, getPropertiesValues: new List<string>{LocalMessage});
+            //_setProps[_setDevice][PropName1] = Rnd.Next(20, 30).ToString();
+            _setProps[_albom][PropName3] = LocalMessage;
+            var getProps = new Dictionary<string, List<string>>{{_host, PropNames}};
+            var order = new Order(_myCode, DateTime.Now, _host, setPropertiesValues: _setProps, getPropertiesValues: getProps);
             _messageManager.OnOrder(this, new EventOrderArgs(order));
         }
     }

@@ -9,15 +9,15 @@ namespace FloatingHomeMobile.Model.Logic.ConnectionLibrary.Abstract.DataObjects.
         public DateTime TimeMarker { get; set; }
         public MessageType MessageType { get; set; }
         public string DeviceCode { get; set; }
-        public PropertiesValues SetPropertiesValues { get; set; }
-        public List<string> GetPropertiesValues { get; set; }
+        public Dictionary<string, PropertiesValues> SetPropertiesValues { get; set; }
+        public Dictionary<string, List<string>> GetPropertiesValues { get; set; }
         public string TargetDeviceCode { get; set; }
 
         public Order()
         {
             
         }
-        public Order(string deviceCode, DateTime timeMarker, string targetDeviceCode, PropertiesValues setPropertiesValues = null, List<string> getPropertiesValues = null)
+        public Order(string deviceCode, DateTime timeMarker, string targetDeviceCode, Dictionary<string, PropertiesValues> setPropertiesValues = null, Dictionary<string, List<string>> getPropertiesValues = null)
         {
             TimeMarker = timeMarker;
             TargetDeviceCode = targetDeviceCode;

@@ -39,7 +39,7 @@ namespace FloatingHomeMobile.Model.Logic.ConnectionLibrary.Abstract.Modules.Mess
 
         public void SendAsync(string host, string data)
         {
-            host = "192.168.1.40";
+            host = "192.168.137.57";
             Logger.Info($"Send to {host}:{Port} via {Name} message {data}");
             byte[] buffer = Encoding.UTF8.GetBytes(data);
             UdpClient.Send(buffer, buffer.Length, host, Port); //TODO мб тоже будем порт держать

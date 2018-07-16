@@ -48,7 +48,7 @@ namespace FloatingHomeMobile.Model.Logic.ConnectionLibrary.Abstract.Modules.Mess
         //        }
         //    }
         //}
-        public async void SendAsync(string host, string data)
+        public void SendAsync(string host, string data)
         {
             using (TcpClient = new TcpClient(/*RemoteHost.Value*/))
             {
@@ -56,7 +56,7 @@ namespace FloatingHomeMobile.Model.Logic.ConnectionLibrary.Abstract.Modules.Mess
 
                 {
                     Logger.Debug($"Connect to {host}:{Port} via {Name}");
-                    await TcpClient.ConnectAsync(host, Port);
+                    TcpClient.Connect(host, Port);
                     using (var network = TcpClient.GetStream())
                     {
                         Logger.Info($"Send to {host}:{Port} via {Name} message {data}");

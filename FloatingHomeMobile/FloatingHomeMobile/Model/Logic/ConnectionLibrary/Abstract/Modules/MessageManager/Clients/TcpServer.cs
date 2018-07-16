@@ -73,10 +73,11 @@ namespace FloatingHomeMobile.Model.Logic.ConnectionLibrary.Abstract.Modules.Mess
                         string host = tcpClient.Client.RemoteEndPoint.GetIp();
                         RemoteHostInfo hostInfo = new RemoteHostInfo(host, Name);
                         Logger.Info($"Recived from {host} via {Name} message {message}");
-                        _OnMessage?.Invoke(this, new EventDataArg<string>(hostInfo, message));
+
+                        Task.Run(() => _OnMessage?.Invoke(this, new EventDataArg<string>(hostInfo, message)));
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     Logger.Debug($"Reciving message from localPort via {Name} stoped");
                 }
